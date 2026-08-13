@@ -50,23 +50,40 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
+  padding: 16px 32px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .topbar .brand {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 19px;
+}
+
+.topbar nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .topbar nav a {
-  margin-left: 16px;
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 6px;
+}
+
+.topbar nav a:hover {
+  background: var(--border);
 }
 
 .topbar nav a.active {
   color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .container {
@@ -81,6 +98,7 @@ a {
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
+  overflow-x: auto;
 }
 
 .stat-tiles {
@@ -209,6 +227,35 @@ form.stacked input {
   font-size: 14px;
 }
 
+.form-card {
+  max-width: 560px;
+  margin: 48px auto;
+  padding: 48px;
+}
+
+.form-card h3 {
+  font-size: 30px;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.form-card label {
+  font-size: 18px;
+}
+
+.form-card input {
+  font-size: 19px;
+  padding: 14px 16px;
+}
+
+.form-card .btn {
+  width: 100%;
+  font-size: 18px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
 .error {
   color: var(--danger);
   font-size: 14px;
@@ -217,9 +264,20 @@ form.stacked input {
 
 .qr-image {
   background: #fff;
-  padding: 16px;
+  padding: 6px;
   border-radius: 8px;
   display: inline-block;
+  line-height: 0;
+}
+
+.qr-image img {
+  display: block;
+}
+
+.qr-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
 }
 
 .redirect-url {
@@ -239,6 +297,3 @@ form.stacked input {
   min-height: 100vh;
 }
 
-.login-card {
-  width: 320px;
-}

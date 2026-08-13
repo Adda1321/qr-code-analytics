@@ -1,11 +1,11 @@
 <div class="topbar">
   <span class="brand">QR Tracker</span>
   <nav>
-    <a href="/admin" class="<%= active === 'dashboard' ? 'active' : '' %>">Dashboard</a>
+    <a href="/" class="<%= active === 'dashboard' ? 'active' : '' %>">Dashboard</a>
     <a href="/admin/qr" class="<%= active === 'qr-list' ? 'active' : '' %>">QR Codes</a>
     <a href="/admin/qr/new" class="<%= active === 'qr-new' ? 'active' : '' %>">New QR Code</a>
-    <form method="POST" action="/logout" style="display:inline">
-      <button type="submit" class="btn secondary" style="padding:4px 10px;font-size:13px;">Log out</button>
+    <form method="POST" action="/logout">
+      <button type="submit" class="btn secondary" style="padding:8px 14px;font-size:15px;">Log out</button>
     </form>
   </nav>
 </div>

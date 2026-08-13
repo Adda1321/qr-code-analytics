@@ -10,11 +10,11 @@ function buildRedirectUrl(baseUrl, code) {
 }
 
 function generatePngBuffer(url) {
-  return QRCode.toBuffer(url, { type: "png", width: 400 });
+  return QRCode.toBuffer(url, { type: "png", width: 400, margin: 1 });
 }
 
 function generateDataUrl(url) {
-  return QRCode.toDataURL(url, { width: 300 });
+  return QRCode.toDataURL(url, { width: 300, margin: 1 });
 }
 
 module.exports = { generateCode, buildRedirectUrl, generatePngBuffer, generateDataUrl };

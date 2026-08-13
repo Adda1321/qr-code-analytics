@@ -3,8 +3,13 @@
 
 <div class="container">
   <div class="card" style="display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start;">
-    <div class="qr-image">
-      <img src="/admin/qr/<%= qrCode.id %>/image" alt="QR code" width="200" height="200" />
+    <div>
+      <div class="qr-image">
+        <img src="/admin/qr/<%= qrCode.id %>/image" alt="QR code" width="200" height="200" />
+      </div>
+      <div class="qr-actions">
+        <a class="btn secondary" href="/admin/qr/<%= qrCode.id %>/image" download="qr-<%= qrCode.code %>.png">Download PNG</a>
+      </div>
     </div>
     <div style="flex:1; min-width:220px;">
       <h3 style="margin-top:0"><%= qrCode.label %></h3>
@@ -47,6 +52,14 @@
       <div class="value" id="stat-30d">–</div>
       <div class="label">Scans, last 30 days</div>
     </div>
+    <div class="stat-tile">
+      <div class="value" id="stat-unique">–</div>
+      <div class="label">Unique devices (range)</div>
+    </div>
+    <div class="stat-tile">
+      <div class="value" id="stat-repeat">–</div>
+      <div class="label">Repeat scans (range)</div>
+    </div>
   </div>
 
   <div class="card">
@@ -56,29 +69,16 @@
     </div>
   </div>
 
-  <div class="charts-grid">
-    <div class="card">
-      <h3>Device type</h3>
-      <div style="height:200px">
-        <canvas id="chart-device"></canvas>
-      </div>
-    </div>
-    <div class="card">
-      <h3>Operating system</h3>
-      <div style="height:200px">
-        <canvas id="chart-os"></canvas>
-      </div>
-    </div>
-    <div class="card">
-      <h3>Browser</h3>
-      <div style="height:200px">
-        <canvas id="chart-browser"></canvas>
-      </div>
+  <div class="card">
+    <h3>Device type</h3>
+    <div style="height:220px">
+      <canvas id="chart-device"></canvas>
     </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 <script src="/dashboard.js"></script>
 <script>
   initDashboard('/api/stats/qr/<%= qrCode.id %>');

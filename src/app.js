@@ -28,8 +28,7 @@ app.use(
 
 app.use(redirectRoutes);
 app.use(authRoutes);
-app.use("/admin", requireAuth);
-app.use("/api", requireAuth);
+app.use(requireAuth);
 app.use(adminRoutes);
 app.use(apiRoutes);
 

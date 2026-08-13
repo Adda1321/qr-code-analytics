@@ -1,3 +1,7 @@
+if (window.Chart && window.ChartDataLabels) {
+  Chart.register(window.ChartDataLabels);
+}
+
 function cssVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
@@ -6,11 +10,27 @@ function formatDay(isoString) {
   return new Date(isoString).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
+function formatDateTime(isoString) {
+  if (!isoString) return "Never";
+  return new Date(isoString).toLocaleString(undefined, {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
 function baseChartOptions() {
   return {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
+    plugins: {
+      legend: { display: false },
+      datalabels: {
+        color: cssVar("--text-primary"),
+        font: { weight: "600", size: 12 },
+      },
+    },
     scales: {
       x: {
         grid: { color: cssVar("--gridline") },
@@ -29,6 +49,10 @@ function renderLineChart(canvas, timeline) {
   if (!canvas) return;
   if (canvas._chart) canvas._chart.destroy();
 
+  const options = baseChartOptions();
+  options.plugins.datalabels.align = "top";
+  options.plugins.datalabels.display = (ctx) => ctx.dataset.data[ctx.dataIndex] > 0;
+
   canvas._chart = new Chart(canvas, {
     type: "line",
     data: {
@@ -44,7 +68,7 @@ function renderLineChart(canvas, timeline) {
         },
       ],
     },
-    options: baseChartOptions(),
+    options,
   });
 }
 
@@ -55,6 +79,8 @@ function renderBarChart(canvas, rows, labelKey = "label") {
   const options = baseChartOptions();
   options.indexAxis = "y";
   options.scales.x.beginAtZero = true;
+  options.plugins.datalabels.anchor = "end";
+  options.plugins.datalabels.align = "end";
 
   canvas._chart = new Chart(canvas, {
     type: "bar",
@@ -70,6 +96,35 @@ function renderBarChart(canvas, rows, labelKey = "label") {
     },
     options,
   });
+}
+
+function escapeHtml(value) {
+  const div = document.createElement("div");
+  div.textContent = value;
+  return div.innerHTML;
+}
+
+function renderLeaderboardTable(rows) {
+  const tbody = document.getElementById("leaderboard-body");
+  if (!tbody || !rows) return;
+
+  tbody.innerHTML = rows
+    .map(
+      (row) => `
+        <tr>
+          <td>${escapeHtml(row.label)}</td>
+          <td>${row.scan_count}</td>
+          <td>${row.unique_devices}</td>
+          <td>${row.repeat_scans}</td>
+          <td>${formatDateTime(row.last_scanned_at)}</td>
+          <td><span class="badge ${row.is_active ? "active" : "inactive"}">${row.is_active ? "Active" : "Inactive"}</span></td>
+        </tr>`
+    )
+    .join("");
+
+  if (rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6">No QR codes yet.</td></tr>';
+  }
 }
 
 async function loadStats(statsUrl, days) {
@@ -90,14 +145,15 @@ async function refreshDashboard(statsUrl, days) {
   setStatTile("stat-7d", data.summary.last7Days);
   setStatTile("stat-30d", data.summary.last30Days);
   setStatTile("stat-active", data.summary.activeQrCodes);
+  setStatTile("stat-unique", data.visitors.uniqueDevices);
+  setStatTile("stat-repeat", data.visitors.repeatScans);
 
   renderLineChart(document.getElementById("chart-timeline"), data.timeline);
   renderBarChart(document.getElementById("chart-device"), data.deviceBreakdown);
-  renderBarChart(document.getElementById("chart-os"), data.osBreakdown);
-  renderBarChart(document.getElementById("chart-browser"), data.browserBreakdown);
 
   if (data.leaderboard) {
     renderBarChart(document.getElementById("chart-leaderboard"), data.leaderboard, "label");
+    renderLeaderboardTable(data.leaderboard);
   }
 }
 

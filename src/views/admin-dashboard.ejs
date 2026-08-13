@@ -30,6 +30,14 @@
       <div class="value" id="stat-active">–</div>
       <div class="label">Active QR codes</div>
     </div>
+    <div class="stat-tile">
+      <div class="value" id="stat-unique">–</div>
+      <div class="label">Unique devices (range)</div>
+    </div>
+    <div class="stat-tile">
+      <div class="value" id="stat-repeat">–</div>
+      <div class="label">Repeat scans (range)</div>
+    </div>
   </div>
 
   <div class="card">
@@ -39,36 +47,43 @@
     </div>
   </div>
 
-  <div class="card">
-    <h3>Scans per QR code</h3>
-    <div style="height:220px">
-      <canvas id="chart-leaderboard"></canvas>
-    </div>
-  </div>
-
   <div class="charts-grid">
     <div class="card">
+      <h3>Scans per QR code</h3>
+      <div style="height:220px">
+        <canvas id="chart-leaderboard"></canvas>
+      </div>
+    </div>
+    <div class="card">
       <h3>Device type</h3>
-      <div style="height:200px">
+      <div style="height:220px">
         <canvas id="chart-device"></canvas>
       </div>
     </div>
-    <div class="card">
-      <h3>Operating system</h3>
-      <div style="height:200px">
-        <canvas id="chart-os"></canvas>
-      </div>
-    </div>
-    <div class="card">
-      <h3>Browser</h3>
-      <div style="height:200px">
-        <canvas id="chart-browser"></canvas>
-      </div>
-    </div>
+  </div>
+
+  <div class="card">
+    <h3>QR code leaderboard</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Label</th>
+          <th>Scans</th>
+          <th>Unique devices</th>
+          <th>Repeat scans</th>
+          <th>Last scanned</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard-body">
+        <tr><td colspan="6">Loading…</td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 <script src="/dashboard.js"></script>
 <script>
   initDashboard('/api/stats/combined');

@@ -11,7 +11,7 @@ router.post("/login", (req, res) => {
 
   if (password && password === process.env.ADMIN_PASSWORD) {
     req.session.authenticated = true;
-    return res.redirect("/admin");
+    return res.redirect("/");
   }
 
   res.status(401).render("login", { error: "Incorrect password." });

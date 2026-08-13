@@ -5,8 +5,12 @@ const { getQrLeaderboard } = require("../services/statsService");
 
 const router = express.Router();
 
-router.get("/admin", (req, res) => {
+router.get("/", (req, res) => {
   res.render("admin-dashboard", { baseUrl: process.env.BASE_URL });
+});
+
+router.get("/admin", (req, res) => {
+  res.redirect("/");
 });
 
 router.get("/admin/qr", async (req, res) => {

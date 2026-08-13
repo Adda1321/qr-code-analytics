@@ -59,26 +59,53 @@ async function getBreakdown(column, qrCodeId = null, days = 30, limit = 10) {
 
 async function getQrLeaderboard() {
   const { rows } = await pool.query(
-    `SELECT q.id, q.label, q.code, q.is_active, COUNT(s.id)::int AS scan_count
+    `SELECT q.id, q.label, q.code, q.is_active, q.created_at,
+       COUNT(s.id)::int AS scan_count,
+       MAX(s.scanned_at) AS last_scanned_at,
+       COUNT(DISTINCT COALESCE(s.ip_address, '') || '|' || COALESCE(s.user_agent_raw, ''))
+         FILTER (WHERE s.id IS NOT NULL)::int AS unique_devices
      FROM qr_codes q
      LEFT JOIN scans s ON s.qr_code_id = q.id
-     GROUP BY q.id, q.label, q.code, q.is_active
+     GROUP BY q.id, q.label, q.code, q.is_active, q.created_at
      ORDER BY scan_count DESC`
   );
 
-  return rows;
+  return rows.map((row) => ({ ...row, repeat_scans: row.scan_count - row.unique_devices }));
+}
+
+async function getVisitorStats(qrCodeId = null, days = 30) {
+  const { rows } = await pool.query(
+    `SELECT
+       COUNT(*)::int AS total_scans,
+       COUNT(DISTINCT COALESCE(ip_address, '') || '|' || COALESCE(user_agent_raw, ''))::int AS unique_devices
+     FROM scans
+     WHERE scanned_at > now() - ($2 || ' days')::interval
+       AND ($1::int IS NULL OR qr_code_id = $1::int)`,
+    [qrCodeId, days]
+  );
+
+  const totalScans = Number(rows[0].total_scans);
+  const uniqueDevices = Number(rows[0].unique_devices);
+
+  return { uniqueDevices, repeatScans: totalScans - uniqueDevices };
 }
 
 async function getStats(qrCodeId = null, days = 30) {
-  const [summary, timeline, deviceBreakdown, osBreakdown, browserBreakdown] = await Promise.all([
+  const [summary, timeline, deviceBreakdown, visitors] = await Promise.all([
     getSummary(qrCodeId),
     getScansOverTime(qrCodeId, days),
     getBreakdown("device_type", qrCodeId, days),
-    getBreakdown("os_name", qrCodeId, days),
-    getBreakdown("browser_name", qrCodeId, days),
+    getVisitorStats(qrCodeId, days),
   ]);
 
-  return { summary, timeline, deviceBreakdown, osBreakdown, browserBreakdown };
+  return { summary, timeline, deviceBreakdown, visitors };
 }
 
-module.exports = { getSummary, getScansOverTime, getBreakdown, getQrLeaderboard, getStats };
+module.exports = {
+  getSummary,
+  getScansOverTime,
+  getBreakdown,
+  getQrLeaderboard,
+  getVisitorStats,
+  getStats,
+};

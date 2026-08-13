@@ -9,6 +9,10 @@
         <tr>
           <th>Label</th>
           <th>Scans</th>
+          <th>Unique devices</th>
+          <th>Repeat scans</th>
+          <th>Created</th>
+          <th>Last scanned</th>
           <th>Status</th>
           <th></th>
         </tr>
@@ -18,6 +22,10 @@
           <tr>
             <td><%= qr.label %></td>
             <td><%= qr.scan_count %></td>
+            <td><%= qr.unique_devices %></td>
+            <td><%= qr.repeat_scans %></td>
+            <td><%= new Date(qr.created_at).toLocaleDateString() %></td>
+            <td><%= qr.last_scanned_at ? new Date(qr.last_scanned_at).toLocaleString() : 'Never' %></td>
             <td>
               <span class="badge <%= qr.is_active ? 'active' : 'inactive' %>">
                 <%= qr.is_active ? 'Active' : 'Inactive' %>
@@ -27,7 +35,7 @@
           </tr>
         <% }) %>
         <% if (qrCodes.length === 0) { %>
-          <tr><td colspan="4">No QR codes yet. <a href="/admin/qr/new">Create one</a>.</td></tr>
+          <tr><td colspan="8">No QR codes yet. <a href="/admin/qr/new">Create one</a>.</td></tr>
         <% } %>
       </tbody>
     </table>
