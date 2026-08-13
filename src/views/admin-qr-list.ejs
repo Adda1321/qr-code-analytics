@@ -1,0 +1,37 @@
+<%- include('partials/head', { title: 'QR Codes' }) %>
+<%- include('partials/nav', { active: 'qr-list' }) %>
+
+<div class="container">
+  <div class="card">
+    <h3>All QR codes</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Label</th>
+          <th>Scans</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% qrCodes.forEach((qr) => { %>
+          <tr>
+            <td><%= qr.label %></td>
+            <td><%= qr.scan_count %></td>
+            <td>
+              <span class="badge <%= qr.is_active ? 'active' : 'inactive' %>">
+                <%= qr.is_active ? 'Active' : 'Inactive' %>
+              </span>
+            </td>
+            <td><a href="/admin/qr/<%= qr.id %>">View →</a></td>
+          </tr>
+        <% }) %>
+        <% if (qrCodes.length === 0) { %>
+          <tr><td colspan="4">No QR codes yet. <a href="/admin/qr/new">Create one</a>.</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

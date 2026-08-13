@@ -1,0 +1,87 @@
+<%- include('partials/head', { title: qrCode.label }) %>
+<%- include('partials/nav', { active: 'qr-list' }) %>
+
+<div class="container">
+  <div class="card" style="display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start;">
+    <div class="qr-image">
+      <img src="/admin/qr/<%= qrCode.id %>/image" alt="QR code" width="200" height="200" />
+    </div>
+    <div style="flex:1; min-width:220px;">
+      <h3 style="margin-top:0"><%= qrCode.label %></h3>
+      <p class="redirect-url"><%= redirectUrl %></p>
+      <p>
+        <span class="badge <%= qrCode.is_active ? 'active' : 'inactive' %>">
+          <%= qrCode.is_active ? 'Active' : 'Inactive' %>
+        </span>
+        &nbsp;→ redirects to <a href="<%= qrCode.destination_url %>" target="_blank"><%= qrCode.destination_url %></a>
+      </p>
+      <% if (qrCode.is_active) { %>
+        <form method="POST" action="/admin/qr/<%= qrCode.id %>/deactivate">
+          <button type="submit" class="btn danger">Deactivate this QR code</button>
+        </form>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="range-select">
+    <label>
+      Range:
+      <select id="range-select">
+        <option value="7">Last 7 days</option>
+        <option value="30" selected>Last 30 days</option>
+        <option value="90">Last 90 days</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="stat-tiles">
+    <div class="stat-tile">
+      <div class="value" id="stat-all-time">–</div>
+      <div class="label">All-time scans</div>
+    </div>
+    <div class="stat-tile">
+      <div class="value" id="stat-7d">–</div>
+      <div class="label">Scans, last 7 days</div>
+    </div>
+    <div class="stat-tile">
+      <div class="value" id="stat-30d">–</div>
+      <div class="label">Scans, last 30 days</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Scans over time</h3>
+    <div style="height:260px">
+      <canvas id="chart-timeline"></canvas>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="card">
+      <h3>Device type</h3>
+      <div style="height:200px">
+        <canvas id="chart-device"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Operating system</h3>
+      <div style="height:200px">
+        <canvas id="chart-os"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Browser</h3>
+      <div style="height:200px">
+        <canvas id="chart-browser"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="/dashboard.js"></script>
+<script>
+  initDashboard('/api/stats/qr/<%= qrCode.id %>');
+</script>
+</body>
+</html>

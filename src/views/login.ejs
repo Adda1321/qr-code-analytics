@@ -1,0 +1,18 @@
+<%- include('partials/head', { title: 'Log in' }) %>
+<div class="login-wrap">
+  <div class="card login-card">
+    <h3 style="margin-top:0">QR Tracker Login</h3>
+    <% if (error) { %>
+      <div class="error"><%= error %></div>
+    <% } %>
+    <form class="stacked" method="POST" action="/login">
+      <label>
+        Password
+        <input type="password" name="password" autofocus required />
+      </label>
+      <button type="submit" class="btn" style="width:100%">Log in</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,244 @@
+:root {
+  color-scheme: light;
+  --surface: #fcfcfb;
+  --page: #f9f9f7;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+  --gridline: #e1e0d9;
+  --baseline: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.1);
+  --accent: #2a78d6;
+  --accent-soft: #cde2fb;
+  --danger: #d03b3b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --surface: #1a1a19;
+    --page: #0d0d0d;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --gridline: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255, 255, 255, 0.1);
+    --accent: #3987e5;
+    --accent-soft: #184f95;
+    --danger: #e66767;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar .brand {
+  font-weight: 600;
+}
+
+.topbar nav a {
+  margin-left: 16px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.topbar nav a.active {
+  color: var(--accent);
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.stat-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.stat-tile .value {
+  font-size: 28px;
+  font-weight: 600;
+  font-variant-numeric: proportional-nums;
+}
+
+.stat-tile .label {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.card h3 {
+  margin-top: 0;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.range-select {
+  margin-bottom: 16px;
+}
+
+.range-select select {
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+table th, table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--gridline);
+}
+
+table th {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.badge.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.badge.inactive {
+  background: var(--border);
+  color: var(--text-muted);
+}
+
+.btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn.secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.btn.danger {
+  background: var(--danger);
+}
+
+form.stacked label {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+form.stacked input {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.error {
+  color: var(--danger);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.qr-image {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.redirect-url {
+  font-family: monospace;
+  font-size: 13px;
+  background: var(--page);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  word-break: break-all;
+}
+
+.login-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.login-card {
+  width: 320px;
+}

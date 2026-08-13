@@ -1,0 +1,22 @@
+{
+  "name": "qr-code-tracker",
+  "version": "1.0.0",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "migrate": "node src/db/migrate.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "QR code generator with per-code and combined scan analytics",
+  "dependencies": {
+    "cookie-session": "2.1.1",
+    "dotenv": "17.4.2",
+    "ejs": "6.0.1",
+    "express": "5.2.1",
+    "pg": "8.23.0",
+    "qrcode": "1.5.4",
+    "ua-parser-js": "2.0.10"
+  }
+}
